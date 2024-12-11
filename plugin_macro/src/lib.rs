@@ -13,7 +13,7 @@ pub fn plugin_entry(_attr: TokenStream, item: TokenStream) -> TokenStream {
         #[no_mangle]
         #[allow(improper_ctypes_definitions)]
         pub extern "C" fn create_plugin() -> Box<dyn plugin_core::plugin_api::Plugin> {
-            #struct_name::load();
+            #struct_name::load()
         }
     };
 
