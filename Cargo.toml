@@ -1,0 +1,13 @@
+[package]
+name = "plugin_core"
+version = "0.1.0"
+edition = "2021"
+
+[features]
+default = ["plugin_api"]
+plugin_macro = ["plugin_api", "dep:plugin_macro"]
+plugin_api = ["dep:plugin_api"]
+
+[dependencies]
+plugin_api = { path = "./plugin_api", optional = true }
+plugin_macro = { path = "./plugin_macro", optional = true }
