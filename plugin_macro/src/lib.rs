@@ -12,9 +12,8 @@ pub fn plugin_entry(_attr: TokenStream, item: TokenStream) -> TokenStream {
 
         #[no_mangle]
         #[allow(improper_ctypes_definitions)]
-        pub extern "C" fn create_plugin() -> *mut dyn plugin_api::Plugin {
-            let plugin = #struct_name::load();
-            Box::into_raw(plugin)
+        pub extern "C" fn create_plugin() -> Box<dyn plugin_core::plugin_api::Plugin> {
+            #struct_name::load();
         }
     };
 
@@ -31,7 +30,7 @@ pub fn plugin_exit(_attr: TokenStream, item: TokenStream) -> TokenStream {
 
         #[no_mangle]
         #[allow(improper_ctypes_definitions)]
-        pub extern "C" fn unload_plugin(plugin: *mut dyn plugin_api::Plugin) {
+        pub extern "C" fn unload_plugin(plugin: &mut Box<dyn plugin_core::plugin_api::Plugin>) {
             if plugin.is_null() {
                 return;
             }
