@@ -30,11 +30,7 @@ pub fn plugin_exit(_attr: TokenStream, item: TokenStream) -> TokenStream {
 
         #[no_mangle]
         #[allow(improper_ctypes_definitions)]
-        pub extern "C" fn unload_plugin(plugin: &mut Box<dyn plugin_core::plugin_api::Plugin>) {
-            if plugin.is_null() {
-                return;
-            }
-            let plugin = unsafe { Box::from_raw(plugin) };
+        pub extern "C" fn unload_plugin(plugin: &mut Box<dyn Plugin>) {
             plugin.unload();
         }
     };
