@@ -10,7 +10,25 @@ pub trait Plugin {
     where
         Self: Sized;
 }
-
-// 定义插件的工厂函数类型
 pub type CreatePluginFn = fn() -> Box<dyn Plugin>;
 pub type UnloadPluginFn = fn();
+#[derive(serde::Deserialize, Debug)]
+pub struct ModuleConfig {
+    pub name: String,
+    pub version: String,
+    pub description: String,
+}
+
+impl ModuleConfig {
+    pub fn load(path: &str) -> Self {
+        let content = std::fs::read_to_string(path).expect("Failed to read Mod.toml");
+        let config: toml::Value = toml::from_str(&content).expect("Failed to parse Mod.toml");
+
+        config
+            .get("module")
+            .expect("Missing [module] section in Mod.toml")
+            .clone()
+            .try_into()
+            .expect("Failed to deserialize [module] section")
+    }
+}

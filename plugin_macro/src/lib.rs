@@ -14,7 +14,6 @@ pub fn plugin_entry(_attr: TokenStream, item: TokenStream) -> TokenStream {
         #[allow(improper_ctypes_definitions)]
         pub extern "C" fn create_plugin() -> Box<dyn plugin_core::plugin_api::Plugin> {
             #struct_name::load();
-            Box::new(#struct_name)
         }
     };
 
