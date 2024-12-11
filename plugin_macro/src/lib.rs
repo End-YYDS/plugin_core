@@ -24,14 +24,15 @@ pub fn plugin_entry(_attr: TokenStream, item: TokenStream) -> TokenStream {
 #[proc_macro_attribute]
 pub fn plugin_exit(_attr: TokenStream, item: TokenStream) -> TokenStream {
     let input = parse_macro_input!(item as DeriveInput);
+    let struct_name = &input.ident;
 
     let expanded = quote! {
         #input
 
         #[no_mangle]
         #[allow(improper_ctypes_definitions)]
-        pub extern "C" fn unload_plugin(plugin: &mut Box<dyn Plugin>) {
-            plugin.unload();
+        pub extern "C" fn unload_plugin() {
+            #struct_name::unload();
         }
     };
 
