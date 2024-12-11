@@ -1,4 +1,6 @@
-pub trait Plugin {
+use std::fmt::Debug;
+
+pub trait Plugin: Debug {
     fn name(&self) -> &str;
     fn version(&self) -> &str;
     fn description(&self) -> &str;
