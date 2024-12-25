@@ -1,3 +1,6 @@
+mod error;
+use serde::{Deserialize, Serialize};
+use serde_json::Value;
 use std::fmt::Debug;
 
 pub trait Plugin: Debug {
@@ -14,6 +17,11 @@ pub trait Plugin: Debug {
 }
 pub type CreatePluginFn = fn() -> Box<dyn Plugin>;
 pub type UnloadPluginFn = fn();
+#[derive(Debug, Serialize, Deserialize)]
+pub struct PluginCommand {
+    pub action: String,
+    pub parameters: Value,
+}
 #[derive(serde::Deserialize, Debug)]
 pub struct ModuleConfig {
     pub name: String,
