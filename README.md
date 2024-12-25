@@ -44,15 +44,27 @@ impl Plugin for Example {
     fn description(&self) -> &str {
         PLUGIN_DESCRIPTION
     }
-    fn execute(&self, input: &str) -> String {
+    fn execute(&self, input: &str) -> PluginResult<()> {
         // 實現外掛邏輯
-        format!("處理輸入: {}", input)
+        let command: PluginCommand = serde_json::from_str(input).map_err(|e| {
+            PluginError::command_error(
+                input,
+                format!("Failed to parse command: {}", e),
+            )
+        })?;
+
+        // 處理不同的命令
+        match command.action.as_str() {
+            // 看需要執行什麼
+        }
+        Ok(())
     }
-    fn load() -> Box<dyn Plugin> {
-        Box::new(Example)
+    fn load() -> PluginResult<Box<dyn Plugin>> {
+        Ok(Box::new(Example))
     }
-    fn unload() {
+    fn unload() -> PluginResult<()>{
     // 實現外掛卸載邏輯
+        Ok(())
     }
 }
 ```
@@ -73,3 +85,37 @@ impl Plugin for Example {
 
 - `#[plugin_entry]`: 生成外掛入口點
 - `#[plugin_exit]`: 生成外掛卸載點
+
+### 插件Error Type
+我們提供了六種錯誤類型來處理不同情況下的錯誤：
+- `LoadError`
+用於處理外掛加載過程中發生的錯誤：
+`context`: 錯誤發生的上下文信息  
+`message`: 具體的錯誤信息
+
+- `ExecutionError`
+用於處理外掛執行過程中的錯誤：
+`context`: 錯誤發生的上下文信息  
+`message`: 具體的錯誤信息
+
+- `CommandError`
+用於處理命令解析或處理過程中的錯誤：  
+`command`: 導致錯誤的命令  
+`message`: 具體的錯誤信息
+
+- `ConfigurationError`
+用於處理配置相關的錯誤：
+`key`: 問題配置項  
+`message`: 具體的錯誤信息
+
+- `ResourceError`
+用於處理資源訪問或處理錯誤：
+`resource_type`: 資源類型  
+`message`: 具體的錯誤信息
+
+- `CustomError`
+用於處理特定插件的特殊錯誤情況：
+`error_type`: 錯誤類型  
+`message`: 具體的錯誤信息
+
+所有這些錯誤類型都實現了`std::error::Error`和 `std::fmt::Display` traits，提供了標準的錯誤處理能力和格式化輸出。
