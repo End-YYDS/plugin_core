@@ -1,4 +1,4 @@
-mod error;
+pub mod error;
 use error::PluginResult;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
@@ -9,7 +9,7 @@ pub trait Plugin: Debug {
     fn version(&self) -> &str;
     fn description(&self) -> &str;
     fn execute(&self, input: &str) -> PluginResult<()>;
-    fn unload() 
+    fn unload()
     where
         Self: Sized;
     fn load() -> Box<dyn Plugin>
@@ -17,7 +17,7 @@ pub trait Plugin: Debug {
         Self: Sized;
 }
 pub type CreatePluginFn = fn() -> Box<dyn Plugin>;
-pub type UnloadPluginFn = fn() ;
+pub type UnloadPluginFn = fn();
 #[derive(Debug, Serialize, Deserialize)]
 pub struct PluginCommand {
     pub action: String,
