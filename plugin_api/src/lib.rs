@@ -9,15 +9,15 @@ pub trait Plugin: Debug {
     fn version(&self) -> &str;
     fn description(&self) -> &str;
     fn execute(&self, input: &str) -> PluginResult<()>;
-    fn unload() -> PluginResult<()>
+    fn unload() 
     where
         Self: Sized;
-    fn load() -> PluginResult<Box<dyn Plugin>>
+    fn load() -> Box<dyn Plugin>
     where
         Self: Sized;
 }
-pub type CreatePluginFn = fn() -> PluginResult<Box<dyn Plugin>>;
-pub type UnloadPluginFn = fn() -> PluginResult<()>;
+pub type CreatePluginFn = fn() -> Box<dyn Plugin>;
+pub type UnloadPluginFn = fn() ;
 #[derive(Debug, Serialize, Deserialize)]
 pub struct PluginCommand {
     pub action: String,

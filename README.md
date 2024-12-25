@@ -59,12 +59,11 @@ impl Plugin for Example {
         }
         Ok(())
     }
-    fn load() -> PluginResult<Box<dyn Plugin>> {
-        Ok(Box::new(Example))
+    fn load() -> xBox<dyn Plugin> {
+        Box::new(Example)
     }
-    fn unload() -> PluginResult<()>{
+    fn unload(){
     // 實現外掛卸載邏輯
-        Ok(())
     }
 }
 ```
