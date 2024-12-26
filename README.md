@@ -44,7 +44,7 @@ impl Plugin for Example {
     fn description(&self) -> &str {
         PLUGIN_DESCRIPTION
     }
-    fn execute(&self, input: &str) -> PluginResult<()> {
+    fn execute(&self, input: Option<&str>) -> PluginResult<()> {
         // 實現外掛邏輯
         let command: PluginCommand = serde_json::from_str(input).map_err(|e| {
             PluginError::command_error(

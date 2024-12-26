@@ -8,7 +8,7 @@ pub trait Plugin: Debug {
     fn name(&self) -> &str;
     fn version(&self) -> &str;
     fn description(&self) -> &str;
-    fn execute(&self, input: &str) -> PluginResult<()>;
+    fn execute(&self, input: Option<&str>) -> PluginResult<()>;
     fn unload()
     where
         Self: Sized;
